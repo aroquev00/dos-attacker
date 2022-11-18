@@ -26,8 +26,8 @@ def run_attacker(victim_port: str, victim_ip: str):
         new_no_processes = int(input())
         if new_no_processes == no_processes:
             print("Ya hay ese número de procesos activos.")
-        elif new_no_processes < 0 or new_no_processes > 50:
-            print("Sólo se permiten de 0 a 50 procesos activos.")
+        elif new_no_processes < 0 or new_no_processes > 15:
+            print("Sólo se permiten de 0 a 15 procesos activos.")
         else:
             dif_no_processes = abs(new_no_processes - no_processes)
             if new_no_processes > no_processes:
